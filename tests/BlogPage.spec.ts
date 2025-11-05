@@ -21,25 +21,23 @@ test.describe('Contact page', () => {
    test('locate the recent post ', async()=>{
         console.log('Current URL:', page.url());
         await expect(page).toHaveURL(/.*blog.*/);
-        await page.pause()
+        //await page.pause()
 
         // Check page title
         await expect(page).toHaveTitle("Blog – Practice E-Commerce Site");        
         let recentpost = page.locator('#recent-posts-3 .widget-title')
         expect(await recentpost.textContent()).toBe('Recent Posts')
 
-        // get the length of the recent posts
+        // get the length of the recent posts and equal to 5 
         let posts = page.locator('#recent-posts-3 ul li')
         expect(await posts.count()).toBe(5);
 
-        // get the length of each post minimun is 10
+        // get the length of each post is minimun of character is  10
         for (let el of await posts.elementHandles()){
-            console.log(await el.textContent());
-            console.log(await el.textContent().length);
-         }
-    })
-    
-    
-    
-    
+            let postcontent = (await el.textContent()).trim();
+            console.log(postcontent);
+            console.log(postcontent.length);
+            expect(postcontent.length).toBeGreaterThan(10)
+        }
+    })    
 })

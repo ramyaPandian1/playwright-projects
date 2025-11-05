@@ -29,23 +29,39 @@ test.describe('Contact page', () => {
 
     })
     
-    test('Fill the form', async () => { 
-        await page.getByLabel('Name').first().fill('Ramyaa');
-        await page.getByRole('textbox',{name: 'Email'}).fill('abc@gmail.com')
-        await page.getByLabel('Phone').fill('12345678')
-        await page.getByLabel('Message').fill('Testing the contact form') 
+    test('Fill the form', async () => {
+        await page.locator('.contact-name .input-text').fill('Ramyaa'); 
+        await page.locator('.contact-email .input-text').fill('abc@gmail.com');
+        await page.locator('.contact-phone .input-text').fill('123456789'); 
+        await page.locator('.contact-message .input-text').fill('Testing the contact form'); 
+
+        // add soft assettion - here it will skip and execute even this assertion fails
+        await expect.soft(page.locator('.contact-message .input-text')).toHaveText('the contact form1')
+
+
+        let submitbutn = page.locator('.everest-forms-submit-button')
+        let successMsg = page.locator('.everest-forms-notice--success')
+        // let submibtn = page.lcocator('button[type=submit]') 
+        await submitbutn.click()
+
+        // to check there are no errors after submitting the form 
+        //: it checks that number of error should be less than 1 it also inclused soft errors also 
+        expect(test.info().errors.length).toEqual([1])
+
+        await expect(successMsg).toBeVisible({ timeout: 10000 })
+        expect(await successMsg.textContent()).toHaveText('Thanks for contacting us! We will be in touch with you shortly')
     })
 
-    test('Click on the submitbutton and verify the message display', async () => {
-        let submitbutn = page.locator('.everest-forms-submit-button')
-        let successMsg = page.locator('.everest-forms-notice--success') 
-        await submitbutn.click()
-        expect(submitbutn.textContent()).toBe('Processing...')
-        await expect(successMsg).toBeVisible({ timeout: 10000 })
-        expect(await successMsg.textContent()).toContain('Thanks for contacting us! We will be in touch with you shortly')
-        await page.pause();
+    // test('Click on the submitbutton and verify the message display', async () => {
+    //     let submitbutn = page.locator('.everest-forms-submit-button')
+    //     let successMsg = page.locator('.everest-forms-notice--success') 
+    //     await submitbutn.click()
+    //     expect(submitbutn.textContent()).toBe('Processing...')
+    //     await expect(successMsg).toBeVisible({ timeout: 10000 })
+    //     expect(await successMsg.textContent()).toContain('Thanks for contacting us! We will be in touch with you shortly')
+    //     await page.pause();
         
-    })
+    // })
     
     
     
