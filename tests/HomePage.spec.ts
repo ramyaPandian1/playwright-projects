@@ -1,8 +1,22 @@
 import {test , expect} from '@playwright/test'
+import HomePage from '../Pages/HomePage';
 
+let page: any
+let context: any
 test.describe('Home page', () => {
+    let homepage : HomePage;
+    test.beforeAll(async ({ browser }) => {
+        context = await browser.newContext()
+        
+        page = await context.newPage()
+        homepage   = new HomePage(page);
+        await page.goto("https://practice.sdetunicorns.com")
+        console.log('Current URL:', page.url());
+        
+    })
     test('navigate and check the title', async ({ page }) => {
-        await page.goto("https://practice.sdetunicorns.com/")
+        //await page.goto("https://practice.sdetunicorns.com/")
+        
 
         await expect(page).toHaveTitle("Practice E-Commerce Site – SDET Unicorns")
         
@@ -10,9 +24,11 @@ test.describe('Home page', () => {
     
     // Type of selector
     test('Click on get started button using css selector', async ({ page }) => {
-        await page.goto("https://practice.sdetunicorns.com/")
+        homepage = new HomePage(page);
+        //await page.goto("https://practice.sdetunicorns.com/")
+        
 
-        await page.locator('#get-started').click()
+        await homepage.getstartedButton.click()
 
         // verify the url 
         await expect(page).toHaveURL('https://practice.sdetunicorns.com/#get-started')
@@ -22,44 +38,43 @@ test.describe('Home page', () => {
     })
 
     test('Verify the text using text selector', async ({ page }) => {
-        await page.goto("https://practice.sdetunicorns.com/")
-
+        
         //verify the text
-        const headingText = page.locator('text="Think different. Make different."')
-        await expect(headingText).toBeVisible()
+        //const headingText = page.locator('text="Think different. Make different."')
+        await expect(homepage.headingText).toBeVisible()
     
     })
 
     test('Verify the home text with both css and text selector', async ({ page }) => {
-        await page.goto("https://practice.sdetunicorns.com/")
+        
 
         // find the home text
         //let homeText = page.locator('#zak-primary-menu:has-text("Home")')
-        let homeText = page.locator('#zak-primary-menu >> text=Home')
+        //let homeText = page.locator('#zak-primary-menu >> text=Home')
 
-        await expect(homeText).toBeVisible()
-        await expect(homeText).toHaveText('Home')
+        await expect(homepage.homeText).toBeVisible()
+        await expect(homepage.homeText).toHaveText('Home')
     })
     
     test("Verify the search button is visible", async ({ page }) => {
-        await page.goto("https://practice.sdetunicorns.com/")
+        
 
         // locate the search button
-        const searchBtn = page.locator('.zak-header-actions--desktop .zak-header-search__toggle')
-        await expect(searchBtn).toBeVisible()
+        //const searchBtn = page.locator('.zak-header-actions--desktop .zak-header-search__toggle')
+        await expect(homepage.searchBtn).toBeVisible()
     })
 
     test('Verify the links content', async ({ page }) => {
-         await page.goto("https://practice.sdetunicorns.com/")
+         
          let expectedLinks=["Home", "About", "Shop", "blog","Contact", "My account"]
 
-         const navlinks = page.locator('#zak-primary-menu li')
+         //const navlinks = page.locator('#zak-primary-menu li')
 
          //expect(await navlinks.count()).toBe(expectedLinks.length)
-         expect(await navlinks.allTextContents()).toEqual(expectedLinks)
+         expect(await homepage.navlinks.allTextContents()).toEqual(expectedLinks)
 
          // print the names 
-         for (let el of await navlinks.elementHandles()){
+         for (let el of await homepage.navlinks.elementHandles()){
             console.log(await el.textContent());
 
          }

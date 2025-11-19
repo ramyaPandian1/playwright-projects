@@ -1,22 +1,26 @@
 import {test , expect } from '@playwright/test'
 import path from 'path';
+import CartPage from '../Pages/CartPage';
 
 let page: any
 let context: any
 
 test.describe('Contact page', () => {
+    let cartPage: CartPage;
 
     test.beforeAll(async ({ browser }) => {
+        cartPage = new CartPage(page);
         context = await browser.newContext()
         
         page = await context.newPage()
+        cartPage = new CartPage(page);
         await page.goto("https://practice.sdetunicorns.com")
         console.log('Current URL:', page.url());
-        const cartLink = page.locator('.zak-menu-item-cart')
+        //const cartLink = page.locator('.zak-menu-item-cart')
 
         await Promise.all([
         page.waitForNavigation(),
-        cartLink.first().click()
+        cartPage.uploadComponent().cartLink.first().click()
         ]);
         //await cartLink.first().click()
 
@@ -26,6 +30,7 @@ test.describe('Contact page', () => {
     })
     
    test('Upload a file  ', async()=>{
+        cartPage = new CartPage(page);
         console.log('Current URL:', page.url());
         
         // Provide the file path
@@ -46,17 +51,22 @@ test.describe('Contact page', () => {
         //         fileInput.className = "";
         //     }
         // });
-        await page.setInputFiles('#upfile_1', filepath);
-        console.log("Check for visisble :     ")
-        console.log(await page.locator('input#upfile_1').isVisible()); // should print true
+        // *********************************************************************8
+        // await page.setInputFiles('#upfile_1', filepath);
+        // console.log("Check for visisble :     ")
+        // console.log(await page.locator('input#upfile_1').isVisible()); // should print true
 
-        // click on submit button : here click on upload button
-        await page.locator('#upload_1').waitFor({ state: 'visible', timeout: 10000 })
-        await page.locator('#upload_1').click();
+        // // click on submit button : here click on upload button
+        // await cartPage.uploadComponent().upload.waitFor({ state: 'visible', timeout: 10000 })
+        // await cartPage.uploadComponent().upload.click();
+
+        // ***************************************************************************************
+
+        await cartPage.uploadComponent().uploadFile(filepath);
         // wait for the success message
-        await page.locator('#wfu_messageblock_header_1_1').waitFor({ state: 'visible', timeout: 10000 })
+        await cartPage.uploadComponent().successtxt.waitFor({ state: 'visible', timeout: 10000 })
         // verify the file is uploaded
         await page.pause()
-        await expect(page.locator('#wfu_messageblock_header_1_1')).toContainText('uploaded successfully', {timeout: 10000});
+        await expect(cartPage.uploadComponent().successtxt).toContainText('uploaded successfully', {timeout: 10000});
     })    
 })
