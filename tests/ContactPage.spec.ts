@@ -1,5 +1,7 @@
 import {test , expect } from '@playwright/test'
 import ContactPage from '../Pages/ContactPage'
+import {faker} from '@faker-js/faker'; 
+// its generates ramdomized data to download the faker package : npm install @faker-js/faker --save-dev  
 
 let page: any
 let context: any
@@ -13,7 +15,7 @@ test.describe('Contact page', () => {
         page = await context.newPage()
         contactPage = new ContactPage(page);
 
-        await page.goto("https://practice.sdetunicorns.com")
+        await page.goto("")
         console.log('Current URL:', page.url());
         const contactLink = page.locator('#zak-primary-menu >> text=Contact')
         await contactLink.click()
@@ -48,12 +50,14 @@ test.describe('Contact page', () => {
         // let submibtn = page.lcocator('button[type=submit]') 
         // await contactPage.submitbutn.click()
 
-        await contactPage.submitForm('Ramyaa', 'abc@gmail.com', '123456789', 'Testing the contact form');
+        //await contactPage.submitForm('Ramyaa', 'abc@gmail.com', '123456789', 'Testing the contact form');
+
+        await contactPage.submitForm(faker.person.fullName(), faker.internet.email(), faker.phone.number(), faker.lorem.paragraphs(2));
 
         // to check there are no errors after submitting the form 
         //: it checks that number of error should be less than 1 it also inclused soft errors also 
         //expect(test.info().errors.length).toEqual([1])
-
+        
         await expect(contactPage.successMsg).toBeVisible({ timeout: 10000 })
         await expect(contactPage.successMsg).toHaveText('Thanks for contacting us! We will be in touch with you shortly')
     })

@@ -10,7 +10,7 @@ test.describe('Home page', () => {
         
         page = await context.newPage()
         homepage   = new HomePage(page);
-        await page.goto("https://practice.sdetunicorns.com")
+        await page.goto("")
         console.log('Current URL:', page.url());
         
     })

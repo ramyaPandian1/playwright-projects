@@ -14,7 +14,7 @@ test.describe('Contact page', () => {
         
         page = await context.newPage()
         cartPage = new CartPage(page);
-        await page.goto("https://practice.sdetunicorns.com")
+        await page.goto("")
         console.log('Current URL:', page.url());
         //const cartLink = page.locator('.zak-menu-item-cart')
 

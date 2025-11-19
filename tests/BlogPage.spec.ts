@@ -12,7 +12,7 @@ test.describe('Contact page', () => {
         
         page = await context.newPage()
         blogPage = new BlogPage(page)
-        await page.goto("https://practice.sdetunicorns.com")
+        await page.goto('')
         console.log('Current URL:', page.url());
         const contactLink = page.locator('#zak-primary-menu >> text=Blog')
         await contactLink.click()
