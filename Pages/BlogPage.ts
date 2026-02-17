@@ -9,21 +9,6 @@ class BlogPage {
         this.recentpost = page.locator('#recent-posts-3 .widget-title')
         this.posts = page.locator('#recent-posts-3 ul li')
     }
-
-    async totalNumberofPosts() {
-        const elements = await this.posts.elementHandles()
-        let postcontent : any
-        for (let el of elements){
-            postcontent = (await el.textContent())?.trim();
-            console.log(postcontent);
-            console.log(postcontent.length);
-        
-        }
-        return postcontent.length
-
-
-    }
-
     
 }
 

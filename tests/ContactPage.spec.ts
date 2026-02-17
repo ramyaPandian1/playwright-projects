@@ -1,5 +1,6 @@
 import {test , expect } from '@playwright/test'
 import ContactPage from '../Pages/ContactPage'
+import {faker} from '@faker-js/faker';
 
 let page: any
 let context: any
@@ -13,10 +14,13 @@ test.describe('Contact page', () => {
         page = await context.newPage()
         contactPage = new ContactPage(page);
 
-        await page.goto("https://practice.sdetunicorns.com")
+         // Since in base url its updated we can just use "/" instead of full url
+        // await page.goto("https://practice.sdetunicorns.com")
+        await page.goto("/")
         console.log('Current URL:', page.url());
         const contactLink = page.locator('#zak-primary-menu >> text=Contact')
         await contactLink.click()
+        
 
         await expect(page).toHaveTitle("Contact – Practice E-Commerce Site");
         
@@ -48,10 +52,20 @@ test.describe('Contact page', () => {
         // let submibtn = page.lcocator('button[type=submit]') 
         // await contactPage.submitbutn.click()
 
-        await contactPage.submitForm('Ramyaa', 'abc@gmail.com', '123456789', 'Testing the contact form');
+        //await contactPage.submitForm('Ramyaa', 'abc@gmail.com', '123456789', 'Testing the contact form');
 
-        // to check there are no errors after submitting the form 
+        // we can also randomize the data using faker library and then we can pass the data to the form
+        // https://fakerjs.dev/
+        // npm install @faker-js/faker --save-dev
+
+        await contactPage.submitForm(faker.person.fullName(), faker.internet.email(), faker.phone.number(), faker.lorem.sentence(3))
+        
+        
+
+
+        // ########  NOTE : to check there are no errors after submitting the form 
         //: it checks that number of error should be less than 1 it also inclused soft errors also 
+
         //expect(test.info().errors.length).toEqual([1])
 
         await expect(contactPage.successMsg).toBeVisible({ timeout: 10000 })

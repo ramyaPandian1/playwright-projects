@@ -1,3 +1,6 @@
+// DEBUG:pw:api - it give all steps in the console and also give the locator details 
+//                  when it is not able to find the element
+
 import {test , expect} from '@playwright/test'
 import HomePage from '../Pages/HomePage';
 
@@ -5,20 +8,26 @@ let page: any
 let context: any
 test.describe('Home page', () => {
     let homepage : HomePage;
-    test.beforeAll(async ({ browser }) => {
-        context = await browser.newContext()
+    // test.beforeAll(async ({ browser }) => {
+    //     context = await browser.newContext()
         
-        page = await context.newPage()
-        homepage   = new HomePage(page);
-        await page.goto("https://practice.sdetunicorns.com")
-        console.log('Current URL:', page.url());
+    //     page = await context.newPage()
+    //     homepage   = new HomePage(page);
+    //     await page.goto("/")
+    //     console.log('Current URL:', page.url());
         
-    })
+    // })
+    test.beforeEach(async ({ page }) => {
+        homepage = new HomePage(page);
+        await page.goto('/');
+    });
+
     test('navigate and check the title', async ({ page }) => {
         //await page.goto("https://practice.sdetunicorns.com/")
         
 
         await expect(page).toHaveTitle("Practice E-Commerce Site – SDET Unicorns")
+        
         
     })  
     
@@ -66,11 +75,21 @@ test.describe('Home page', () => {
 
     test('Verify the links content', async ({ page }) => {
          
-         let expectedLinks=["Home", "About", "Shop", "blog","Contact", "My account"]
+         let expectedLinks=["Home", "About", "Shop", "Blog","Contact", "My account"]
 
          //const navlinks = page.locator('#zak-primary-menu li')
+         // if i need to specify the li id should start with some words then specify like this 
+         // page.locator('#zak-primary-menu li[id*="menu-item"]')
 
          //expect(await navlinks.count()).toBe(expectedLinks.length)
+
+         // allTextContents returns array of strings
+         // to very the nth element add  homepage.navlinks.nth(3)
+         // we can verify first and last also
+         // to verify expect(await homepage.navlinks.first().textContent()).toEqual("expectedLinks[0]")
+         // to verify expect(await homepage.navlinks.last().textContent()).toEqual("expectedLinks[expectedLinks.length -1]")
+         // to  verify expect(await homepage.navlinks.texcontent()).toEqual("expectedLinks[3]")
+         
          expect(await homepage.navlinks.allTextContents()).toEqual(expectedLinks)
 
          // print the names 

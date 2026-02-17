@@ -1,6 +1,6 @@
 import { Page , Locator } from '@playwright/test';
 class ContactPage {
-    page: Page;
+    private page: Page;
     text: Locator;
     name: Locator;
     email: Locator;

@@ -12,7 +12,10 @@ test.describe('Contact page', () => {
         
         page = await context.newPage()
         blogPage = new BlogPage(page)
-        await page.goto("https://practice.sdetunicorns.com")
+
+        // Since in base url its updated we can just use "/" instead of full url
+        //await page.goto("https://practice.sdetunicorns.com")
+        await page.goto("/")
         console.log('Current URL:', page.url());
         const contactLink = page.locator('#zak-primary-menu >> text=Blog')
         await contactLink.click()
@@ -43,7 +46,16 @@ test.describe('Contact page', () => {
         //     expect(postcontent.length).toBeGreaterThan(10)
         // }
 
-        const totalLength = await blogPage.totalNumberofPosts()
-        expect(totalLength).toBeGreaterThan(10)
+        const elements = await blogPage.posts.elementHandles()
+        let postcontent : any
+        for (let el of elements){
+            postcontent = (await el.textContent())?.trim();
+            console.log(postcontent);
+            console.log(postcontent.length);
+            expect(postcontent.length).toBeGreaterThan(10)
+        
+        }
+
+  
     })    
 })
