@@ -67,7 +67,7 @@ test.describe('Contact page', () => {
         //: it checks that number of error should be less than 1 it also inclused soft errors also 
 
         //expect(test.info().errors.length).toEqual([1])
-
+        
         await expect(contactPage.successMsg).toBeVisible({ timeout: 10000 })
         await expect(contactPage.successMsg).toHaveText('Thanks for contacting us! We will be in touch with you shortly')
     })

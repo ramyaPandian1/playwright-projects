@@ -12,10 +12,7 @@ test.describe('Contact page', () => {
         
         page = await context.newPage()
         blogPage = new BlogPage(page)
-
-        // Since in base url its updated we can just use "/" instead of full url
-        //await page.goto("https://practice.sdetunicorns.com")
-        await page.goto("/")
+        await page.goto("https://practice.sdetunicorns.com")
         console.log('Current URL:', page.url());
         const contactLink = page.locator('#zak-primary-menu >> text=Blog')
         await contactLink.click()
