@@ -16,4 +16,4 @@ jobs:
       - name: Install Faker library
         run: npm install @faker-js/faker --save-dev
       - name: Run your tests
-        run: npx playwright test tests/home.spec.ts
+        run: npx playwright test tests/HomePage.spec.ts
