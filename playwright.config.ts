@@ -22,7 +22,13 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['allure-playwright'],['html']],
+  reporter: [['allure-playwright',{outputFolder: 'test-results'}],['html']],
+  // here the allure report will be generated in the test-results folder and we can use 
+  // allure command line to generate the report and then we can open the report in the browser
+  // ( in github workflow file e2e.yml file we have added the command to generate the allure report 
+  // and then we can upload the report as an artifact and then we can download the report and open
+  //  it in the browser)
+  
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   
   // for global setup

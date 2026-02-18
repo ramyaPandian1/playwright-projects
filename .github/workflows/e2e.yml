@@ -17,3 +17,13 @@ jobs:
         run: npm install @faker-js/faker --save-dev
       - name: Run your tests
         run: npx playwright test tests/HomePage.spec.ts
+# Now we need to upload the test results as an artifact so that we can view them later
+      - name: Upload Playwright Test Results
+        if: always() 
+        # This ensures that the artifact is uploaded even if the tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report from gitHub workflow
+          path: test-results
+          # Here only playwright test resuls are uploaded in order to get the allure report 
+          # the changes are made in the playwright.config.ts file to save the allure  results in the test-results folder
